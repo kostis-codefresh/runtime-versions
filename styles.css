@@ -50,6 +50,24 @@ body {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
   }
 
+  /* Arrow between Codefresh and Helm chart */
+  .arrow {
+    width: 2px;
+    height: 40px;
+    background-color: #333; /* Arrow line color */
+    position: relative;
+    margin: -20px auto 0; /* Adjust spacing between cards */
+  }
+
+  .arrow::after {
+    content: '';
+    position: absolute;
+    top: 40px; /* Position the arrowhead */
+    left: -5px;
+    border: 5px solid transparent;
+    border-top-color: #333; /* Arrowhead color */
+  }
+
   /* Version label styles */
   .version-label {
     font-size: 12px;
@@ -105,6 +123,14 @@ body {
       height: 80px;
       font-size: 16px;
     }
+
+    .arrow {
+      height: 30px; /* Adjust arrow height for smaller screens */
+    }
+
+    .arrow::after {
+      top: 30px; /* Adjust arrowhead position */
+    }
   }
   
   @media (max-width: 480px) {
@@ -118,5 +144,13 @@ body {
       height: auto;
       font-size: 14px;
       padding: 10px;
+    }
+
+    .arrow {
+      height: 20px; /* Adjust arrow height for mobile screens */
+    }
+
+    .arrow::after {
+      top: 20px; /* Adjust arrowhead position */
     }
   }
