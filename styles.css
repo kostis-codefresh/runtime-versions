@@ -50,6 +50,16 @@ body {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
   }
 
+  /* Make the entire card clickable */
+  .card-link {
+    text-decoration: none; /* Remove underline from links */
+    display: inline-block; /* Ensure the link wraps the card */
+  }
+
+  .card-link .card {
+    cursor: pointer; /* Show pointer cursor on hover */
+  }
+
   /* Arrow between Codefresh and Helm chart */
   .arrow {
     width: 2px;
