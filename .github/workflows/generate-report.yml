@@ -1,4 +1,4 @@
-name: Run Go Application and Commit Changes
+name: Generate Version report
 
 on:
   schedule:
