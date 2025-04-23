@@ -18,8 +18,8 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 20px; /* Add spacing between levels */
-    padding: 20px;
+    gap: 10px; /* Add spacing between levels */
+    padding: 10px;
   }
   
   /* Card container */
@@ -66,7 +66,7 @@ body {
     height: 40px;
     background-color: #333; /* Arrow line color */
     position: relative;
-    margin: -20px auto 0; /* Adjust spacing between cards */
+    margin: -10px auto 0; /* Adjust spacing between cards */
   }
 
   .arrow::after {
@@ -86,7 +86,7 @@ body {
     margin-top: 8px; /* Add spacing between the label and the main text */
   }
 
-  /* Default stripe */
+  /* Default stripe  */
   .card::after {
     content: '';
     position: absolute;
@@ -130,7 +130,7 @@ body {
     padding: 20px;
     border: 2px solid #666; /* Gray border for the group */
     border-radius: 16px; /* Rounded corners for the group */
-    margin-top: 20px; /* Add spacing above the group */
+    margin-top: 10px; /* Add spacing above the group */
     background-color: #f9f9f9; /* Optional: light background for the group */
   }
 
