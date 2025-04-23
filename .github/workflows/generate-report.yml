@@ -1,0 +1,34 @@
+name: Run Go Application and Commit Changes
+
+on:
+  schedule:
+    # Run every 2 hours, but not on Saturdays
+    - cron: "0 */2 * * 0-5"
+  workflow_dispatch: # Allow manual triggering
+
+jobs:
+  generate-report:
+    name: Generate Report
+    runs-on: ubuntu-latest
+
+    permissions:
+        # Give the default GITHUB_TOKEN write permission to commit and push the
+        # added or changed files to the repository.
+        contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      # Step 2: Set up Go environment
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: 1.23 # Specify the Go version you are using
+
+      # Step 3: Run the Go application
+      - name: Run Go Application
+        run: go run .
+
+      - uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+            commit_message: Generating version report     
