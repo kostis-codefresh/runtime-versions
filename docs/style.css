@@ -1,0 +1,198 @@
+/* General styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    background-color: #f9f9f9;
+  }
+  
+  h1 {
+    margin: 20px 0;
+    font-size: 24px;
+    color: #333;
+  }
+  
+  /* Tree container */
+  .tree-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px; /* Add spacing between levels */
+    padding: 10px;
+  }
+  
+  /* Card container */
+  .card-container {
+    display: flex;
+    flex-wrap: wrap; /* Allow wrapping for smaller screens */
+    justify-content: center; /* Center the cards */
+    gap: 20px; /* Add spacing between cards */
+    padding: 20px;
+  }
+  
+  /* General card styles */
+  .card {
+    background-color: #fff;
+    border: 3px solid;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 200px;
+    height: 100px;
+    display: flex;
+    flex-direction: column; /* Stack content vertically */
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    position: relative; /* Required for the pseudo-element */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  /* Date label styles */
+  .date-label {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    font-size: 12px;
+    color: #666;
+    font-weight: normal;
+  }
+
+  /* Make the entire card clickable */
+  .card-link {
+    text-decoration: none; /* Remove underline from links */
+    display: inline-block; /* Ensure the link wraps the card */
+  }
+
+  .card-link .card {
+    cursor: pointer; /* Show pointer cursor on hover */
+  }
+
+
+  .arrow {
+    width: 2px;
+    height: 40px;
+    background-color: #333; /* Arrow line color */
+    position: relative;
+    margin: -10px auto 0; /* Adjust spacing between cards */
+  }
+
+  .arrow::after {
+    content: '';
+    position: absolute;
+    top: 40px; /* Position the arrowhead */
+    left: -5px;
+    border: 5px solid transparent;
+    border-top-color: #333; /* Arrowhead color */
+  }
+
+  /* Version label styles */
+  .version-label {
+    font-size: 12px;
+    font-weight: normal;
+    color: #666;
+    margin-top: 8px; /* Add spacing between the label and the main text */
+  }
+
+  /* Default stripe  */
+  .card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 10px; /* Width of the stripe */
+    height: 100%; /* Full height of the card */
+    background-color: purple; /* Default stripe color */
+    border-top-right-radius: 6px; /* Match the card's border radius */
+    border-bottom-right-radius: 6px; /* Match the card's border radius */
+  }
+
+  /* Green stripe for the "Codefresh" box */
+  .card.codefresh::after {
+    background-color: green;
+  }
+
+  /* Blue stripe for the "Helm chart" box */
+  .card.helm-chart::after {
+    background-color: blue;
+  }
+  
+  /* Hover effect for cards */
+  .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+  }
+  
+  /* Row for the bottom cards */
+  .row {
+    display: flex;
+    justify-content: center;
+    gap: 20px; /* Add spacing between cards in the row */
+  }
+  
+  /* Grouped cards container */
+  .grouped-cards {
+    display: flex;
+    justify-content: center;
+    gap: 20px; /* Add spacing between cards */
+    padding: 20px;
+    border: 2px solid #666; /* Gray border for the group */
+    border-radius: 16px; /* Rounded corners for the group */
+    margin-top: 10px; /* Add spacing above the group */
+    background-color: #f9f9f9; /* Optional: light background for the group */
+  }
+
+  /* Responsive design for grouped cards */
+  @media (max-width: 768px) {
+    .row {
+      flex-wrap: wrap; /* Allow wrapping for smaller screens */
+    }
+  
+    .card {
+      width: 150px;
+      height: 80px;
+      font-size: 16px;
+    }
+
+    .arrow {
+      height: 30px; /* Adjust arrow height for smaller screens */
+    }
+
+    .arrow::after {
+      top: 30px; /* Adjust arrowhead position */
+    }
+
+    .grouped-cards {
+      flex-wrap: wrap; /* Allow wrapping for smaller screens */
+      padding: 10px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .row {
+      flex-direction: column; /* Stack cards vertically on very small screens */
+      align-items: center;
+    }
+  
+    .card {
+      width: 100%;
+      height: auto;
+      font-size: 14px;
+      padding: 10px;
+    }
+
+    .arrow {
+      height: 20px; /* Adjust arrow height for mobile screens */
+    }
+
+    .arrow::after {
+      top: 20px; /* Adjust arrowhead position */
+    }
+
+    .grouped-cards {
+      flex-direction: column; /* Stack cards vertically on very small screens */
+      align-items: center;
+    }
+  }
