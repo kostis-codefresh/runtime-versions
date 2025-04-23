@@ -2,7 +2,7 @@ package main
 
 import (
 	"html/template"
-	"io/ioutil"
+	"io"
 	"log"
 	"os"
 	"time"
@@ -47,7 +47,11 @@ func main() {
 	if err != nil {
 		log.Fatal("create file: ", err)
 	}
-	defer f.Close()
+	defer func() {
+		if cerr := f.Close(); cerr != nil {
+			log.Fatal("close file: ", cerr)
+		}
+	}()
 
 	type templateData struct {
 		Now           time.Time
@@ -74,10 +78,25 @@ func checkErr(err error) {
 }
 
 func copy(src string, dst string) {
-	// Read all content of src to data
-	data, err := ioutil.ReadFile(src)
+	// Open the source file
+	srcFile, err := os.Open(src)
 	checkErr(err)
-	// Write data to dst
-	err = ioutil.WriteFile(dst, data, 0644)
+	defer func() {
+		if cerr := srcFile.Close(); cerr != nil {
+			log.Fatal("close src file: ", cerr)
+		}
+	}()
+
+	// Create the destination file
+	dstFile, err := os.Create(dst)
+	checkErr(err)
+	defer func() {
+		if cerr := dstFile.Close(); cerr != nil {
+			log.Fatal("close dst file: ", cerr)
+		}
+	}()
+
+	// Copy the contents from src to dst
+	_, err = io.Copy(dstFile, srcFile)
 	checkErr(err)
 }
