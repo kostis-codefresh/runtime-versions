@@ -19,6 +19,9 @@ func discoverVersions() []versionDetails {
 		{Name: "Docker", Version: "v0.0.1"},
 	}
 
+	findGitHubReleases()
+	readContent()
+
 	return versions
 
 }
