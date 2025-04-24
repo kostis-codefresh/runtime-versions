@@ -11,8 +11,9 @@ import (
 
 // Release represents a GitHub release
 type Release struct {
-	TagName string `json:"tag_name"`
-	Name    string `json:"name"`
+	TagName   string `json:"tag_name"`
+	Name      string `json:"name"`
+	CreatedAt string `json:"created_at"` // Add CreatedAt field to capture the release creation date
 }
 
 // fetchGithubReleases fetches the last 20 releases of a GitHub project
@@ -64,7 +65,7 @@ func findGitHubReleases() {
 
 	fmt.Println("Last 20 releases:")
 	for _, release := range releases {
-		fmt.Printf("Tag: %s, Name: %s\n", release.TagName, release.Name)
+		fmt.Printf("Tag: %s, Name: %s, Created At: %s\n", release.TagName, release.Name, release.CreatedAt)
 	}
 }
 
