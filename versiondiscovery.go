@@ -8,16 +8,44 @@ import (
 	"time"
 )
 
+// GitHub repositories to check for releases
+const (
+	GitOpsRuntime     = "https://github.com/codefresh-io/gitops-runtime-helm"
+	ArgoHelmRepo      = "https://github.com/codefresh-io/argo-helm"
+	ArgoCDRepo        = "https://github.com/codefresh-io/argo-cd"
+	ArgoRolloutsRepo  = "https://github.com/codefresh-io/argo-rollouts"
+	ArgoWorkflowsRepo = "https://github.com/codefresh-io/argo-workflows"
+	ArgoEventsRepo    = "https://github.com/codefresh-io/argo-events"
+)
+
 type versionDetails struct {
 	Name    string
 	Version string
+	Date    time.Time
+	Link    string
 }
 
-func discoverVersions() []versionDetails {
-	versions := []versionDetails{
-		{Name: "Codefresh CLI", Version: "v0.0.1"},
-		{Name: "Docker", Version: "v0.0.1"},
-	}
+type GitOpsRuntimeRelease struct {
+	GitOpsRuntime versionDetails
+	ArgoHelm      versionDetails
+	ArgoCD        versionDetails
+	ArgoRollouts  versionDetails
+	ArgoWorkflows versionDetails
+	ArgoEvents    versionDetails
+}
+
+// Final template that contains all information. Rendered with web/index.html.tpl
+type templateData struct {
+	Now           time.Time //when the page was generated
+	VersionsFound []GitOpsRuntimeRelease
+}
+
+func discoverVersions() []GitOpsRuntimeRelease {
+	versions := []GitOpsRuntimeRelease{}
+
+	// Example: Append a GitOpsRuntimeRelease to the slice
+	// You can replace this with actual logic to populate the slice
+	versions = append(versions, GitOpsRuntimeRelease{})
 
 	findGitHubReleases()
 	readContent()
@@ -55,11 +83,6 @@ func main() {
 			log.Fatal("close file: ", cerr)
 		}
 	}()
-
-	type templateData struct {
-		Now           time.Time
-		VersionsFound []versionDetails
-	}
 
 	tData := templateData{
 		Now:           time.Now(),
