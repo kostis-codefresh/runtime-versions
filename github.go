@@ -65,11 +65,11 @@ type FileContent struct {
 }
 
 // fetchFileFromGitHub fetches the contents of a specific file from a GitHub repository at a given tag
-func fetchFileFromGitHub(repoURL, tag, filePath string) (string, error) {
+func fetchFileFromGitHub(repoURL, tag, filePath string) string {
 	// Extract the owner and repo name from the URL
 	parts := strings.Split(strings.TrimPrefix(repoURL, "https://github.com/"), "/")
 	if len(parts) < 2 {
-		return "", fmt.Errorf("invalid GitHub repository URL")
+		return fmt.Errorf("invalid GitHub repository URL").Error()
 	}
 	owner, repo := parts[0], parts[1]
 
@@ -79,51 +79,41 @@ func fetchFileFromGitHub(repoURL, tag, filePath string) (string, error) {
 	// Make the HTTP request
 	resp, err := http.Get(apiURL)
 	if err != nil {
-		return "", fmt.Errorf("failed to fetch file: %w", err)
+		log.Printf("failed to fetch file: %v", err)
+		return ""
 	}
 	defer func() {
 		if cerr := resp.Body.Close(); cerr != nil {
-			log.Fatal("close file: ", cerr)
+			log.Printf("close file: %v", cerr)
 		}
 	}()
 
 	if resp.StatusCode != http.StatusOK {
 		body, _ := io.ReadAll(resp.Body)
-		return "", fmt.Errorf("unexpected status code: %d, response: %s", resp.StatusCode, string(body))
+		log.Printf("unexpected status code: %d, response: %s", resp.StatusCode, string(body))
+		return ""
 	}
 
 	// Parse the response body
 	var fileContent FileContent
 	err = json.NewDecoder(resp.Body).Decode(&fileContent)
 	if err != nil {
-		return "", fmt.Errorf("failed to parse file content response: %w", err)
+		log.Printf("failed to parse file content response: %v", err)
+		return ""
 	}
 
 	// Decode the file content if it's base64 encoded
 	if fileContent.Encoding == "base64" {
 		decodedContent, err := base64.StdEncoding.DecodeString(fileContent.Content)
 		if err != nil {
-			return "", fmt.Errorf("failed to decode file content: %w", err)
+			log.Printf("failed to decode file content: %v", err)
+			return ""
+
 		}
-		return string(decodedContent), nil
+		return string(decodedContent)
 	}
 
-	return fileContent.Content, nil
-}
-
-func readContent() {
-	repoURL := "https://github.com/codefresh-io/gitops-runtime-helm"
-	tag := "0.18.2"
-	filePath := "charts/gitops-runtime/Chart.yaml"
-
-	content, err := fetchFileFromGitHub(repoURL, tag, filePath)
-	if err != nil {
-		fmt.Printf("Error: %v\n", err)
-		return
-	}
-
-	fmt.Println("File Content:")
-	fmt.Println(content)
+	return fileContent.Content
 }
 
 // generateReleaseNotesURL generates a URL to view the release notes for a specific tag in a GitHub project.
@@ -131,7 +121,7 @@ func generateReleaseNotesURL(repoURL, tag string) string {
 	// Extract the owner and repo name from the URL
 	parts := strings.Split(strings.TrimPrefix(repoURL, "https://github.com/"), "/")
 	if len(parts) < 2 {
-		fmt.Errorf("invalid GitHub repository URL")
+		log.Printf("invalid GitHub repository URL")
 		return ""
 	}
 	owner, repo := parts[0], parts[1]

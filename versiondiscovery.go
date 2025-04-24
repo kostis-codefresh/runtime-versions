@@ -74,13 +74,23 @@ func discoverVersions() []GitOpsRuntimeRelease {
 				Date:    parseTime(release.CreatedAt),
 				Link:    generateReleaseNotesURL(GitOpsRuntime, release.TagName),
 			},
+			ArgoHelm: findArgoHelmDetails(release.TagName),
 		}
 		versions = append(versions, GitOpsRuntimeRelease)
 	}
 
-	readContent()
-
 	return versions
+}
+
+func findArgoHelmDetails(tagName string) versionDetails {
+	var result versionDetails
+
+	yamlContent := fetchFileFromGitHub(GitOpsRuntime, tagName, "charts/gitops-runtime/Chart.yaml")
+
+	fmt.Printf("Argo Helm Chart Content:\n%s\n", yamlContent)
+
+	return result
+
 }
 
 func main() {

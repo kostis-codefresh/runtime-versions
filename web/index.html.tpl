@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>GitOps Runtime versions. Generated at {{.Now.Format "02 Jan 06 15:04 MST"}}. See <a href="https://artifacthub.io/packages/helm/codefresh-gitops-runtime/gitops-runtime">Artifact Hub</a> for more details. Next update in 2 hours.
+  <h1>GitOps Runtime versions. Generated at {{.Now.Format "02 Jan 2006 15:04 MST"}}. See <a href="https://artifacthub.io/packages/helm/codefresh-gitops-runtime/gitops-runtime">Artifact Hub</a> for more details. Next update in 2 hours.
 		</h1>
 
     {{range $item, $gitHubRelease := .VersionsFound}}
@@ -16,12 +16,12 @@
   <div class="tree-container">
     <a href="{{$gitHubRelease.GitOpsRuntime.Link}}" target="_blank" class="card-link">
       <div class="card codefresh">
-        <span class="date-label">{{$gitHubRelease.GitOpsRuntime.Date.Format "02 Jan 06"}}</span>
+        <span class="date-label">{{$gitHubRelease.GitOpsRuntime.Date.Format "02 Jan 2006"}}</span>
         GitOps Runtime
         <span class="version-label"> {{$gitHubRelease.GitOpsRuntime.Version}}</span>
       </div>
     </a>
-    <!-- Arrow from Codefresh to Helm chart -->
+
     <div class="arrow vertical"></div>
     <a href="https://codefresh.io" target="_blank" class="card-link">
       <div class="card helm-chart">
