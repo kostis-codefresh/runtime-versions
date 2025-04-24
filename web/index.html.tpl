@@ -14,7 +14,7 @@
     <a href="https://codefresh.io" target="_blank" class="card-link">
       <div class="card codefresh">
         <span class="date-label">Feb 2024</span>
-        Codefresh
+        GitOps Runtime
         <span class="version-label">version 1.2.3 - v.345</span>
       </div>
     </a>
@@ -22,8 +22,8 @@
     <div class="arrow vertical"></div>
     <a href="https://codefresh.io" target="_blank" class="card-link">
       <div class="card helm-chart">
-        <span class="date-label">Feb 2024</span>
-        Helm chart
+        <span class="date-label">2 Feb 2024</span>
+        Argo Helm chart
         <span class="version-label">version 1.2.3 - v.345</span>
       </div>
     </a>
