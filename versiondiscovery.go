@@ -44,32 +44,43 @@ type templateData struct {
 }
 
 func discoverVersions() []GitOpsRuntimeRelease {
-	versions := []GitOpsRuntimeRelease{}
 
-	// Example: Append a GitOpsRuntimeRelease to the slice
-	// You can replace this with actual logic to populate the slice
-	versions = append(versions, GitOpsRuntimeRelease{})
-
-	findGitHubReleases()
-	readContent()
-
-	return versions
-
-}
-
-func findGitHubReleases() {
+	// Helper function to parse time from string
+	parseTime := func(dateStr string) time.Time {
+		parsedTime, err := time.Parse(time.RFC3339, dateStr)
+		if err != nil {
+			log.Printf("Error parsing time: %v\n", err)
+			return time.Time{} // Return zero value of time.Time on error
+		}
+		return parsedTime
+	}
 	repoURL := GitOpsRuntime
+	versions := []GitOpsRuntimeRelease{}
 
 	releases, err := fetchGithubReleases(repoURL, GitHubReleaseLimit)
 	if err != nil {
 		fmt.Printf("Error: %v\n", err)
-		return
+		return versions
 	}
 
 	fmt.Printf("Last %d releases:\n", GitHubReleaseLimit)
 	for _, release := range releases {
 		fmt.Printf("Tag: %s, Name: %s, Created At: %s\n", release.TagName, release.Name, release.CreatedAt)
+
+		GitOpsRuntimeRelease := GitOpsRuntimeRelease{
+			GitOpsRuntime: versionDetails{
+				Name:    release.Name,
+				Version: release.TagName,
+				Date:    parseTime(release.CreatedAt),
+				// Link:    release.HTMLURL,
+			},
+		}
+		versions = append(versions, GitOpsRuntimeRelease)
 	}
+
+	readContent()
+
+	return versions
 }
 
 func main() {
