@@ -127,15 +127,16 @@ func readContent() {
 }
 
 // generateReleaseNotesURL generates a URL to view the release notes for a specific tag in a GitHub project.
-func generateReleaseNotesURL(repoURL, tag string) (string, error) {
+func generateReleaseNotesURL(repoURL, tag string) string {
 	// Extract the owner and repo name from the URL
 	parts := strings.Split(strings.TrimPrefix(repoURL, "https://github.com/"), "/")
 	if len(parts) < 2 {
-		return "", fmt.Errorf("invalid GitHub repository URL")
+		fmt.Errorf("invalid GitHub repository URL")
+		return ""
 	}
 	owner, repo := parts[0], parts[1]
 
 	// Construct the URL for the release notes
 	releaseNotesURL := fmt.Sprintf("https://github.com/%s/%s/releases/tag/%s", owner, repo, tag)
-	return releaseNotesURL, nil
+	return releaseNotesURL
 }

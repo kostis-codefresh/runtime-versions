@@ -72,7 +72,7 @@ func discoverVersions() []GitOpsRuntimeRelease {
 				Name:    release.Name,
 				Version: release.TagName,
 				Date:    parseTime(release.CreatedAt),
-				// Link:    release.HTMLURL,
+				Link:    generateReleaseNotesURL(GitOpsRuntime, release.TagName),
 			},
 		}
 		versions = append(versions, GitOpsRuntimeRelease)

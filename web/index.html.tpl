@@ -14,7 +14,7 @@
     {{range $item, $gitHubRelease := .VersionsFound}}
 
   <div class="tree-container">
-    <a href="https://codefresh.io" target="_blank" class="card-link">
+    <a href="{{$gitHubRelease.GitOpsRuntime.Link}}" target="_blank" class="card-link">
       <div class="card codefresh">
         <span class="date-label">{{$gitHubRelease.GitOpsRuntime.Date.Format "02 Jan 06"}}</span>
         GitOps Runtime
