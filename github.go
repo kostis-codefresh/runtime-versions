@@ -4,7 +4,8 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
+	"log"
 	"net/http"
 	"strings"
 )
@@ -33,7 +34,11 @@ func fetchGithubReleases(repoURL string) ([]Release, error) {
 	if err != nil {
 		return nil, fmt.Errorf("failed to fetch releases: %w", err)
 	}
-	defer resp.Body.Close()
+	defer func() {
+		if cerr := resp.Body.Close(); cerr != nil {
+			log.Fatal("close file: ", cerr)
+		}
+	}()
 
 	if resp.StatusCode != http.StatusOK {
 		return nil, fmt.Errorf("unexpected status code: %d", resp.StatusCode)
@@ -92,10 +97,14 @@ func fetchFileFromGitHub(repoURL, tag, filePath string) (string, error) {
 	if err != nil {
 		return "", fmt.Errorf("failed to fetch file: %w", err)
 	}
-	defer resp.Body.Close()
+	defer func() {
+		if cerr := resp.Body.Close(); cerr != nil {
+			log.Fatal("close file: ", cerr)
+		}
+	}()
 
 	if resp.StatusCode != http.StatusOK {
-		body, _ := ioutil.ReadAll(resp.Body)
+		body, _ := io.ReadAll(resp.Body)
 		return "", fmt.Errorf("unexpected status code: %d, response: %s", resp.StatusCode, string(body))
 	}
 
@@ -131,4 +140,18 @@ func readContent() {
 
 	fmt.Println("File Content:")
 	fmt.Println(content)
+}
+
+// generateReleaseNotesURL generates a URL to view the release notes for a specific tag in a GitHub project.
+func generateReleaseNotesURL(repoURL, tag string) (string, error) {
+	// Extract the owner and repo name from the URL
+	parts := strings.Split(strings.TrimPrefix(repoURL, "https://github.com/"), "/")
+	if len(parts) < 2 {
+		return "", fmt.Errorf("invalid GitHub repository URL")
+	}
+	owner, repo := parts[0], parts[1]
+
+	// Construct the URL for the release notes
+	releaseNotesURL := fmt.Sprintf("https://github.com/%s/%s/releases/tag/%s", owner, repo, tag)
+	return releaseNotesURL, nil
 }
