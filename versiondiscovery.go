@@ -18,7 +18,7 @@ const (
 	ArgoWorkflowsRepo = "https://github.com/codefresh-io/argo-workflows"
 	ArgoEventsRepo    = "https://github.com/codefresh-io/argo-events"
 
-	GitHubReleaseLimit = 10 // Maximum Number of releases to fetch
+	GitHubReleaseLimit = 2 // Maximum Number of releases to fetch
 )
 
 type versionDetails struct {
