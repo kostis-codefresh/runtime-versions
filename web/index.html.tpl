@@ -58,13 +58,6 @@
           <span class="version-label">version 1.2.3 - v.345</span>
         </div>
       </a>
-      <a href="https://codefresh.io" target="_blank" class="card-link">
-        <div class="card">
-          <span class="date-label">Feb 2024</span>
-          Agent
-          <span class="version-label">version 1.2.3 - v.345</span>
-        </div>
-      </a>
     </div>
   </div>
 </body>
