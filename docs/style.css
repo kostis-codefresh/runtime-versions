@@ -20,6 +20,7 @@ body {
     align-items: center;
     gap: 10px; /* Add spacing between levels */
     padding: 10px;
+    padding-bottom: 10%;
   }
   
   /* Card container */
