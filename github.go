@@ -18,7 +18,7 @@ type Release struct {
 }
 
 // fetchGithubReleases fetches the last 20 releases of a GitHub project
-func fetchGithubReleases(repoURL string) ([]Release, error) {
+func fetchGithubReleases(repoURL string, limit int) ([]Release, error) {
 	// Extract the owner and repo name from the URL
 	parts := strings.Split(strings.TrimPrefix(repoURL, "https://github.com/"), "/")
 	if len(parts) < 2 {
@@ -51,27 +51,11 @@ func fetchGithubReleases(repoURL string) ([]Release, error) {
 		return nil, fmt.Errorf("failed to parse releases response: %w", err)
 	}
 
-	// Limit to the last 20 releases
-	if len(releases) > 20 {
-		releases = releases[:20]
+	if len(releases) > limit {
+		releases = releases[:limit]
 	}
 
 	return releases, nil
-}
-
-func findGitHubReleases() {
-	repoURL := "https://github.com/codefresh-io/gitops-runtime-helm"
-
-	releases, err := fetchGithubReleases(repoURL)
-	if err != nil {
-		fmt.Printf("Error: %v\n", err)
-		return
-	}
-
-	fmt.Println("Last 20 releases:")
-	for _, release := range releases {
-		fmt.Printf("Tag: %s, Name: %s, Created At: %s\n", release.TagName, release.Name, release.CreatedAt)
-	}
 }
 
 // FileContent represents the response from the GitHub API for file contents

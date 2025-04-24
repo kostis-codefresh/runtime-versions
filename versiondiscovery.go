@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"html/template"
 	"io"
 	"log"
@@ -16,6 +17,8 @@ const (
 	ArgoRolloutsRepo  = "https://github.com/codefresh-io/argo-rollouts"
 	ArgoWorkflowsRepo = "https://github.com/codefresh-io/argo-workflows"
 	ArgoEventsRepo    = "https://github.com/codefresh-io/argo-events"
+
+	GitHubReleaseLimit = 10 // Maximum Number of releases to fetch
 )
 
 type versionDetails struct {
@@ -54,20 +57,37 @@ func discoverVersions() []GitOpsRuntimeRelease {
 
 }
 
+func findGitHubReleases() {
+	repoURL := GitOpsRuntime
+
+	releases, err := fetchGithubReleases(repoURL, GitHubReleaseLimit)
+	if err != nil {
+		fmt.Printf("Error: %v\n", err)
+		return
+	}
+
+	fmt.Printf("Last %d releases:\n", GitHubReleaseLimit)
+	for _, release := range releases {
+		fmt.Printf("Tag: %s, Name: %s, Created At: %s\n", release.TagName, release.Name, release.CreatedAt)
+	}
+}
+
 func main() {
 
+	// Discover GitHub releases from all related repositories
+	versionsFound := discoverVersions()
+	log.Printf("Found %d versions of the GitOps Runtime\n", len(versionsFound))
+
+	log.Println("Creating output directory at ./docs")
 	err := os.MkdirAll("docs", 0755)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Println("Creating output directory at docs")
 
 	copy("web/style.css", "docs/style.css")
 	copy("web/favicon.png", "docs/favicon.png")
 
-	versionsFound := discoverVersions()
-
-	log.Printf("Found %d version in the Codefresh Artifact hub\n", len(versionsFound))
+	log.Println("Rendering HTML report at ./docs/index.html")
 
 	tmpl, err := template.ParseFiles("web/index.html.tpl")
 	if err != nil {
@@ -92,7 +112,7 @@ func main() {
 	err = tmpl.Execute(f, tData)
 
 	if err != nil {
-		log.Fatal("execute: ", err)
+		log.Fatal("Could not render HTML template: ", err)
 	}
 
 }
