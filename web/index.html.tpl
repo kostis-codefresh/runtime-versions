@@ -9,13 +9,16 @@
 </head>
 <body>
   <h1>GitOps Runtime versions. Generated at {{.Now.Format "02 Jan 06 15:04 MST"}}. See <a href="https://artifacthub.io/packages/helm/codefresh-gitops-runtime/gitops-runtime">Artifact Hub</a> for more details. Next update in 2 hours.
-		</p></h1>
+		</h1>
+
+    {{range $item, $gitHubRelease := .VersionsFound}}
+
   <div class="tree-container">
     <a href="https://codefresh.io" target="_blank" class="card-link">
       <div class="card codefresh">
         <span class="date-label">Feb 2024</span>
         GitOps Runtime
-        <span class="version-label">version 1.2.3 - v.345</span>
+        <span class="version-label"> {{$gitHubRelease.GitOpsRuntime.Version}}</span>
       </div>
     </a>
     <!-- Arrow from Codefresh to Helm chart -->
@@ -60,5 +63,7 @@
       </a>
     </div>
   </div>
+  <hr/>
+  {{end}}
 </body>
 </html>
