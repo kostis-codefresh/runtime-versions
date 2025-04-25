@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>GitOps Runtime versions. Generated at {{.Now.Format "02 Jan 2006 15:04 MST"}}. See <a href="https://artifacthub.io/packages/helm/codefresh-gitops-runtime/gitops-runtime">Artifact Hub</a> for more details. Next update in 2 hours.
+  <h1><a href="https://github.com/kostis-codefresh/runtime-versions">GitOps Runtime versions</a>. Generated at {{.Now.Format "02 Jan 2006 15:04 MST"}}. See <a href="https://artifacthub.io/packages/helm/codefresh-gitops-runtime/gitops-runtime">Artifact Hub</a> for more details. Next update in 2 hours.
 		</h1>
 
     {{range $item, $gitHubRelease := .VersionsFound}}
