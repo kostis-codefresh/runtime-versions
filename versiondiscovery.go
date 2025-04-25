@@ -18,7 +18,7 @@ const (
 	ArgoWorkflowsRepo = "https://github.com/codefresh-io/argo-workflows"
 	ArgoEventsRepo    = "https://github.com/codefresh-io/argo-events"
 
-	GitHubReleaseLimit = 2 // Maximum Number of releases to fetch
+	GitHubReleaseLimit = 5 // Maximum Number of releases to fetch
 )
 
 type VersionDetails struct {
@@ -94,8 +94,6 @@ func findArgoHelmDetails(tagName string, gitOpsRuntime *GitOpsRuntimeRelease) {
 
 	yamlContent := fetchFileFromGitHub(GitOpsRuntime, tagName, "charts/gitops-runtime/Chart.yaml")
 
-	fmt.Printf("Argo Helm Chart Content:\n%s\n", yamlContent)
-
 	extractArgoDependencies(yamlContent, gitOpsRuntime)
 
 	findSourceCodeVersion(gitOpsRuntime)
@@ -124,7 +122,7 @@ func findSourceCodeVersion(gitOpsRuntime *GitOpsRuntimeRelease) {
 
 	argoWorkflowsChartYaml := fetchFileFromGitHub(ArgoHelmRepo, gitOpsRuntime.ArgoWorkflows.ArgoHelmChart.GitTag, "charts/argo-workflows/Chart.yaml")
 	argoWorkflowsAppVersion := extractAppVersion(argoWorkflowsChartYaml)
-	gitOpsRuntime.ArgoCD.SourceCodeRepo = VersionDetails{
+	gitOpsRuntime.ArgoWorkflows.SourceCodeRepo = VersionDetails{
 		Name:    "argo-workflows",
 		Version: argoWorkflowsAppVersion,
 		GitTag:  argoWorkflowsAppVersion,
@@ -133,7 +131,7 @@ func findSourceCodeVersion(gitOpsRuntime *GitOpsRuntimeRelease) {
 
 	argoEventsChartYaml := fetchFileFromGitHub(ArgoHelmRepo, gitOpsRuntime.ArgoEvents.ArgoHelmChart.GitTag, "charts/argo-events/Chart.yaml")
 	argoEventsAppVersion := extractAppVersion(argoEventsChartYaml)
-	gitOpsRuntime.ArgoCD.SourceCodeRepo = VersionDetails{
+	gitOpsRuntime.ArgoEvents.SourceCodeRepo = VersionDetails{
 		Name:    "argo-events",
 		Version: argoEventsAppVersion,
 		GitTag:  argoEventsAppVersion,
