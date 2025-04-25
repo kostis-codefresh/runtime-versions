@@ -25,32 +25,32 @@
     <div class="arrow vertical"></div>
 
     <div class="grouped-cards">
-    <a href="https://codefresh.io" target="_blank" class="card-link">
+    <a href="{{$gitHubRelease.ArgoCD.ArgoHelmChart.Link}}" target="_blank" class="card-link">
       <div class="card helm-chart">
-        <span class="date-label">2 Feb 2024</span>
+        <span class="date-label">argo-cd</span>
         Argo Helm chart
-        <span class="version-label">version 1.2.3 - v.345</span>
+        <span class="version-label">{{$gitHubRelease.ArgoCD.ArgoHelmChart.Version}}</span>
       </div>
     </a>
-    <a href="https://codefresh.io" target="_blank" class="card-link">
+    <a href="{{$gitHubRelease.ArgoRollouts.ArgoHelmChart.Link}}" target="_blank" class="card-link">
       <div class="card helm-chart">
-        <span class="date-label">2 Feb 2024</span>
+        <span class="date-label">argo-rollouts</span>
         Argo Helm chart
-        <span class="version-label">version 1.2.3 - v.345</span>
+        <span class="version-label">{{$gitHubRelease.ArgoRollouts.ArgoHelmChart.Version}}</span>
       </div>
     </a>
-    <a href="https://codefresh.io" target="_blank" class="card-link">
+    <a href="{{$gitHubRelease.ArgoWorkflows.ArgoHelmChart.Link}}" target="_blank" class="card-link">
       <div class="card helm-chart">
-        <span class="date-label">2 Feb 2024</span>
+        <span class="date-label">argo-workflows</span>
         Argo Helm chart
-        <span class="version-label">version 1.2.3 - v.345</span>
+        <span class="version-label">{{$gitHubRelease.ArgoWorkflows.ArgoHelmChart.Version}}</span>
       </div>
     </a>
-    <a href="https://codefresh.io" target="_blank" class="card-link">
+    <a href="{{$gitHubRelease.ArgoEvents.ArgoHelmChart.Link}}" target="_blank" class="card-link">
       <div class="card helm-chart">
-        <span class="date-label">2 Feb 2024</span>
+        <span class="date-label">argo-events</span>
         Argo Helm chart
-        <span class="version-label">version 1.2.3 - v.345</span>
+        <span class="version-label">{{$gitHubRelease.ArgoEvents.ArgoHelmChart.Version}}</span>
       </div>
     </a>
     </div>

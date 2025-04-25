@@ -31,25 +31,8 @@ func extractHelmDependencies(chartYAMLContent string) ([]HelmDependency, error) 
 	return metadata.Dependencies, nil
 }
 
-func extractComponents() {
-	// Example Chart.yaml content
-	chartYAMLContent := `
-dependencies:
-- name: argo-cd
-  repository: https://codefresh-io.github.io/argo-helm
-  version: 7.8.23-1-cap-v2.14.9-2025-04-20-584fc7f3
-- name: argo-events
-  repository: https://codefresh-io.github.io/argo-helm
-  version: 2.4.7-1-cap-CR-28072
-- name: argo-workflows
-  repository: https://codefresh-io.github.io/argo-helm
-  version: 0.45.2-v3.6.4-cap-CR-27392
-- name: argo-rollouts
-  repository: https://codefresh-io.github.io/argo-helm
-  version: 2.37.3-2-v1.7.2-cap-CR-26082
-`
-
-	// Extract dependencies
+func extractArgoDependencies(chartYAMLContent string, gitOpsRuntime *GitOpsRuntimeRelease) {
+	// Extract dependencies from Helm projects
 	dependencies, err := extractHelmDependencies(chartYAMLContent)
 	if err != nil {
 		log.Fatalf("Error extracting dependencies: %v", err)
@@ -59,5 +42,40 @@ dependencies:
 	fmt.Println("Extracted Helm Dependencies:")
 	for _, dep := range dependencies {
 		fmt.Printf("Name: %s, Version: %s\n", dep.Name, dep.Version)
+
+		if dep.Name == "argo-cd" {
+			gitOpsRuntime.ArgoCD.ArgoHelmChart = VersionDetails{
+				Name:    dep.Name,
+				Version: dep.Version,
+				// Date:    gitOpsRuntime.GitOpsRuntime.Date,
+				Link: generateReleaseNotesURL(ArgoHelmRepo, "argo-cd-"+dep.Version),
+			}
+		} else if dep.Name == "argo-rollouts" {
+			gitOpsRuntime.ArgoRollouts.ArgoHelmChart = VersionDetails{
+				Name:    dep.Name,
+				Version: dep.Version,
+				// Date:    gitOpsRuntime.GitOpsRuntime.Date,
+				Link: generateReleaseNotesURL(ArgoHelmRepo, "argo-rollouts-"+dep.Version),
+			}
+		} else if dep.Name == "argo-workflows" {
+			gitOpsRuntime.ArgoWorkflows.ArgoHelmChart = VersionDetails{
+				Name:    dep.Name,
+				Version: dep.Version,
+				// Date:    gitOpsRuntime.GitOpsRuntime.Date,
+				Link: generateReleaseNotesURL(ArgoHelmRepo, "argo-workflows-"+dep.Version),
+			}
+		} else if dep.Name == "argo-events" {
+			gitOpsRuntime.ArgoEvents.ArgoHelmChart = VersionDetails{
+				Name:    dep.Name,
+				Version: dep.Version,
+				// Date:    gitOpsRuntime.GitOpsRuntime.Date,
+				Link: generateReleaseNotesURL(ArgoHelmRepo, "argo-events-"+dep.Version),
+			}
+		}
 	}
+
+	fmt.Printf("Argo CD Version: %s\n", gitOpsRuntime.ArgoCD.ArgoHelmChart.Version)
+	fmt.Printf("Argo Rollouts Version: %s\n", gitOpsRuntime.ArgoRollouts.ArgoHelmChart.Version)
+	fmt.Printf("Argo Workflows Version: %s\n", gitOpsRuntime.ArgoWorkflows.ArgoHelmChart.Version)
+	fmt.Printf("Argo Events Version: %s\n", gitOpsRuntime.ArgoEvents.ArgoHelmChart.Version)
 }

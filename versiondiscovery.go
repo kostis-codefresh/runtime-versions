@@ -82,21 +82,20 @@ func discoverVersions() []GitOpsRuntimeRelease {
 			},
 		}
 		// Level 2 - ArgoCD Helm chart
-		findArgoHelmDetails(release.TagName, runtimeRelease)
+		findArgoHelmDetails(release.TagName, &runtimeRelease)
 		versions = append(versions, runtimeRelease)
 	}
 
 	return versions
 }
 
-func findArgoHelmDetails(tagName string, gitOpsRuntime GitOpsRuntimeRelease) VersionDetails {
-	var result VersionDetails
+func findArgoHelmDetails(tagName string, gitOpsRuntime *GitOpsRuntimeRelease) {
 
 	yamlContent := fetchFileFromGitHub(GitOpsRuntime, tagName, "charts/gitops-runtime/Chart.yaml")
 
 	fmt.Printf("Argo Helm Chart Content:\n%s\n", yamlContent)
 
-	return result
+	extractArgoDependencies(yamlContent, gitOpsRuntime)
 
 }
 
