@@ -62,41 +62,42 @@ func extractArgoDependencies(chartYAMLContent string, gitOpsRuntime *GitOpsRunti
 	for _, dep := range dependencies {
 		fmt.Printf("Name: %s, Version: %s\n", dep.Name, dep.Version)
 
-		if dep.Name == "argo-cd" {
+		// Use a switch statement to handle different dependency names
+		switch dep.Name {
+		case "argo-cd":
 			gitOpsRuntime.ArgoCD.ArgoHelmChart = VersionDetails{
 				Name:    dep.Name,
 				Version: dep.Version,
 				GitTag:  dep.Name + "-" + dep.Version,
-				// Date:    gitOpsRuntime.GitOpsRuntime.Date,
-				Link: generateReleaseNotesURL(ArgoHelmRepo, dep.Name+"-"+dep.Version),
+				Link:    generateReleaseNotesURL(ArgoHelmRepo, dep.Name+"-"+dep.Version),
 			}
-		} else if dep.Name == "argo-rollouts" {
+		case "argo-rollouts":
 			gitOpsRuntime.ArgoRollouts.ArgoHelmChart = VersionDetails{
 				Name:    dep.Name,
 				Version: dep.Version,
 				GitTag:  dep.Name + "-" + dep.Version,
-				// Date:    gitOpsRuntime.GitOpsRuntime.Date,
-				Link: generateReleaseNotesURL(ArgoHelmRepo, dep.Name+"-"+dep.Version),
+				Link:    generateReleaseNotesURL(ArgoHelmRepo, dep.Name+"-"+dep.Version),
 			}
-		} else if dep.Name == "argo-workflows" {
+		case "argo-workflows":
 			gitOpsRuntime.ArgoWorkflows.ArgoHelmChart = VersionDetails{
 				Name:    dep.Name,
 				Version: dep.Version,
 				GitTag:  dep.Name + "-" + dep.Version,
-				// Date:    gitOpsRuntime.GitOpsRuntime.Date,
-				Link: generateReleaseNotesURL(ArgoHelmRepo, dep.Name+"-"+dep.Version),
+				Link:    generateReleaseNotesURL(ArgoHelmRepo, dep.Name+"-"+dep.Version),
 			}
-		} else if dep.Name == "argo-events" {
+		case "argo-events":
 			gitOpsRuntime.ArgoEvents.ArgoHelmChart = VersionDetails{
 				Name:    dep.Name,
 				Version: dep.Version,
 				GitTag:  dep.Name + "-" + dep.Version,
-				// Date:    gitOpsRuntime.GitOpsRuntime.Date,
-				Link: generateReleaseNotesURL(ArgoHelmRepo, dep.Name+"-"+dep.Version),
+				Link:    generateReleaseNotesURL(ArgoHelmRepo, dep.Name+"-"+dep.Version),
 			}
+		default:
+			log.Printf("Unknown dependency: %s", dep.Name)
 		}
 	}
 
+	// Print the versions for debugging
 	fmt.Printf("Argo CD Version: %s\n", gitOpsRuntime.ArgoCD.ArgoHelmChart.Version)
 	fmt.Printf("Argo Rollouts Version: %s\n", gitOpsRuntime.ArgoRollouts.ArgoHelmChart.Version)
 	fmt.Printf("Argo Workflows Version: %s\n", gitOpsRuntime.ArgoWorkflows.ArgoHelmChart.Version)
