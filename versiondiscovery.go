@@ -21,20 +21,24 @@ const (
 	GitHubReleaseLimit = 2 // Maximum Number of releases to fetch
 )
 
-type versionDetails struct {
+type VersionDetails struct {
 	Name    string
 	Version string
 	Date    time.Time
 	Link    string
 }
 
+type ArgoProject struct {
+	ArgoHelmChart  VersionDetails
+	SourceCodeRepo VersionDetails
+}
+
 type GitOpsRuntimeRelease struct {
-	GitOpsRuntime versionDetails
-	ArgoHelm      versionDetails
-	ArgoCD        versionDetails
-	ArgoRollouts  versionDetails
-	ArgoWorkflows versionDetails
-	ArgoEvents    versionDetails
+	GitOpsRuntime VersionDetails
+	ArgoCD        ArgoProject
+	ArgoRollouts  ArgoProject
+	ArgoWorkflows ArgoProject
+	ArgoEvents    ArgoProject
 }
 
 // Final template that contains all information. Rendered with web/index.html.tpl
@@ -64,26 +68,29 @@ func discoverVersions() []GitOpsRuntimeRelease {
 	}
 
 	fmt.Printf("Last %d releases:\n", GitHubReleaseLimit)
+
+	//Level 1 - GitOps Runtime
 	for _, release := range releases {
 		fmt.Printf("Tag: %s, Name: %s, Created At: %s\n", release.TagName, release.Name, release.CreatedAt)
 
-		GitOpsRuntimeRelease := GitOpsRuntimeRelease{
-			GitOpsRuntime: versionDetails{
+		runtimeRelease := GitOpsRuntimeRelease{
+			GitOpsRuntime: VersionDetails{
 				Name:    release.Name,
 				Version: release.TagName,
 				Date:    parseTime(release.CreatedAt),
 				Link:    generateReleaseNotesURL(GitOpsRuntime, release.TagName),
 			},
-			ArgoHelm: findArgoHelmDetails(release.TagName),
 		}
-		versions = append(versions, GitOpsRuntimeRelease)
+		// Level 2 - ArgoCD Helm chart
+		findArgoHelmDetails(release.TagName, runtimeRelease)
+		versions = append(versions, runtimeRelease)
 	}
 
 	return versions
 }
 
-func findArgoHelmDetails(tagName string) versionDetails {
-	var result versionDetails
+func findArgoHelmDetails(tagName string, gitOpsRuntime GitOpsRuntimeRelease) VersionDetails {
+	var result VersionDetails
 
 	yamlContent := fetchFileFromGitHub(GitOpsRuntime, tagName, "charts/gitops-runtime/Chart.yaml")
 
