@@ -57,32 +57,32 @@
     <div class="arrow horizontal"></div>
     <!-- Grouped cards -->
     <div class="grouped-cards">
-      <a href="https://codefresh.io" target="_blank" class="card-link">
+      <a href="{{$gitHubRelease.ArgoCD.SourceCodeRepo.Link}}" target="_blank" class="card-link">
         <div class="card">
-          <span class="date-label">Feb 2024</span>
+          <span class="date-label"></span>
           Argo CD
-          <span class="version-label">version 1.2.3 - v.345</span>
+          <span class="version-label">{{$gitHubRelease.ArgoCD.SourceCodeRepo.Version}}</span>
         </div>
       </a>
-      <a href="https://codefresh.io" target="_blank" class="card-link">
+      <a href="{{$gitHubRelease.ArgoRollouts.SourceCodeRepo.Link}}" target="_blank" class="card-link">
         <div class="card">
-          <span class="date-label">Feb 2024</span>
+          <span class="date-label"></span>
           Argo Rollouts
-          <span class="version-label">version 1.2.3 - v.345</span>
+          <span class="version-label">{{$gitHubRelease.ArgoRollouts.SourceCodeRepo.Version}}</span>
         </div>
       </a>
-      <a href="https://codefresh.io" target="_blank" class="card-link">
+      <a href="{{$gitHubRelease.ArgoWorkflows.SourceCodeRepo.Link}}" target="_blank" class="card-link">
         <div class="card">
-          <span class="date-label">Feb 2024</span>
+          <span class="date-label"></span>
           Argo Workflows
-          <span class="version-label">version 1.2.3 - v.345</span>
+          <span class="version-label">{{$gitHubRelease.ArgoWorkflows.SourceCodeRepo.Version}}</span>
         </div>
       </a>
-      <a href="https://codefresh.io" target="_blank" class="card-link">
+      <a href="{{$gitHubRelease.ArgoEvents.SourceCodeRepo.Link}}" target="_blank" class="card-link">
         <div class="card">
-          <span class="date-label">Feb 2024</span>
+          <span class="date-label"></span>
           Argo Events
-          <span class="version-label">version 1.2.3 - v.345</span>
+          <span class="version-label">{{$gitHubRelease.ArgoEvents.SourceCodeRepo.Version}}</span>
         </div>
       </a>
     </div>

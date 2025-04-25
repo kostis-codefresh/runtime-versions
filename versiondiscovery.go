@@ -24,6 +24,7 @@ const (
 type VersionDetails struct {
 	Name    string
 	Version string
+	GitTag  string
 	Date    time.Time
 	Link    string
 }
@@ -97,6 +98,47 @@ func findArgoHelmDetails(tagName string, gitOpsRuntime *GitOpsRuntimeRelease) {
 
 	extractArgoDependencies(yamlContent, gitOpsRuntime)
 
+	findSourceCodeVersion(gitOpsRuntime)
+
+}
+
+func findSourceCodeVersion(gitOpsRuntime *GitOpsRuntimeRelease) {
+
+	argocdChartYaml := fetchFileFromGitHub(ArgoHelmRepo, gitOpsRuntime.ArgoCD.ArgoHelmChart.GitTag, "charts/argo-cd/Chart.yaml")
+	argocdAppVersion := extractAppVersion(argocdChartYaml)
+	gitOpsRuntime.ArgoCD.SourceCodeRepo = VersionDetails{
+		Name:    "argo-cd",
+		Version: argocdAppVersion,
+		GitTag:  argocdAppVersion,
+		Link:    generateReleaseNotesURL(ArgoCDRepo, argocdAppVersion),
+	}
+
+	argoRolloutsChartYaml := fetchFileFromGitHub(ArgoHelmRepo, gitOpsRuntime.ArgoRollouts.ArgoHelmChart.GitTag, "charts/argo-rollouts/Chart.yaml")
+	argoRolloutsAppVersion := extractAppVersion(argoRolloutsChartYaml)
+	gitOpsRuntime.ArgoRollouts.SourceCodeRepo = VersionDetails{
+		Name:    "argo-rollouts",
+		Version: argoRolloutsAppVersion,
+		GitTag:  argoRolloutsAppVersion,
+		Link:    generateReleaseNotesURL(ArgoRolloutsRepo, argoRolloutsAppVersion),
+	}
+
+	argoWorkflowsChartYaml := fetchFileFromGitHub(ArgoHelmRepo, gitOpsRuntime.ArgoWorkflows.ArgoHelmChart.GitTag, "charts/argo-workflows/Chart.yaml")
+	argoWorkflowsAppVersion := extractAppVersion(argoWorkflowsChartYaml)
+	gitOpsRuntime.ArgoCD.SourceCodeRepo = VersionDetails{
+		Name:    "argo-workflows",
+		Version: argoWorkflowsAppVersion,
+		GitTag:  argoWorkflowsAppVersion,
+		Link:    generateReleaseNotesURL(ArgoWorkflowsRepo, argoWorkflowsAppVersion),
+	}
+
+	argoEventsChartYaml := fetchFileFromGitHub(ArgoHelmRepo, gitOpsRuntime.ArgoEvents.ArgoHelmChart.GitTag, "charts/argo-events/Chart.yaml")
+	argoEventsAppVersion := extractAppVersion(argoEventsChartYaml)
+	gitOpsRuntime.ArgoCD.SourceCodeRepo = VersionDetails{
+		Name:    "argo-events",
+		Version: argoEventsAppVersion,
+		GitTag:  argoEventsAppVersion,
+		Link:    generateReleaseNotesURL(ArgoEventsRepo, argoEventsAppVersion),
+	}
 }
 
 func main() {
